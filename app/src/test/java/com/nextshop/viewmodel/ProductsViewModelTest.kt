@@ -7,6 +7,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,10 +39,15 @@ class ProductsViewModelTest {
             ProductsItemResponse("88888", "teste", "teste", "teste"),
             ProductsItemResponse("99999", "teste", "teste", "teste")
         )
-        viewModel.products.observeForever {}
-        viewModel.fetchProducts("apple")
+
+        runBlocking {
+            viewModel.products.observeForever {}
+            viewModel.fetchProducts("apple")
+        }
 
         assert(viewModel.products.value != null)
+        assert(viewModel.products.value?.data != null)
+        assert(viewModel.products.value?.status == LiveDataResult.STATUS.SUCCESS)
     }
 
     @Test
@@ -55,7 +61,7 @@ class ProductsViewModelTest {
         viewModel.products.observeForever {}
         viewModel.fetchProducts("apple")
 
-        assert(viewModel.products.value != null)
-        assert(viewModel.products.value?.size == 0)
+        assert(viewModel.products.value?.data == null)
+        assert(viewModel.products.value?.status == LiveDataResult.STATUS.ERROR)
     }
 }

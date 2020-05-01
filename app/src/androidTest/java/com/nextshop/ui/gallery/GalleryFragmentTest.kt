@@ -26,11 +26,6 @@ class GalleryFragmentTest {
     @get:Rule
     val parentActivityTestRule = ActivityTestRule(ParentActivity::class.java)
 
-    @Before
-    fun setup() {
-        // TODO - https://github.com/JakeWharton/okhttp-idling-resource/issues/10
-    }
-
     @Test
     fun galleryScreen_showProgressTest() {
         onView(withId(R.id.state_progress_gallery)).check(matches(isDisplayed()))

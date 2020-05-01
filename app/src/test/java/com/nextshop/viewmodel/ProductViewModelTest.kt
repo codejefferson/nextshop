@@ -48,6 +48,8 @@ class ProductViewModelTest {
         viewModel.fetchProduct("3333")
 
         assert(viewModel.product.value != null)
+        assert(viewModel.product.value?.data != null)
+        assert(viewModel.product.value?.status == LiveDataResult.STATUS.SUCCESS)
     }
 
     @Test
@@ -61,6 +63,7 @@ class ProductViewModelTest {
         viewModel.product.observeForever {}
         viewModel.fetchProduct("44444")
 
-        assert(viewModel.product.value == null)
+        assert(viewModel.product.value?.data == null)
+        assert(viewModel.product.value?.status == LiveDataResult.STATUS.ERROR)
     }
 }

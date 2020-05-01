@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="#2CBFDADF"
-    android:padding="16dp"
+    android:paddingBottom="16dp"
     tools:context=".ui.gallery.GalleryFragment">
 
     <SearchView
@@ -23,10 +23,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gallery_rv"
         android:layout_width="match_parent"
-        android:layout_height="706dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:cacheColorHint="@android:color/transparent"
         android:clipToPadding="false"
         android:divider="@color/transparent"
