@@ -12,19 +12,26 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.nextshop.R
 import com.nextshop.mechanism.VerifyNetworkInfo
-import com.nextshop.service.model.ProductItemResponse
+import com.nextshop.service.model.ProductsItemResponse
+import com.nextshop.viewmodel.BaseViewModelFactory
 import com.nextshop.ui.detail.DetailFragment
 import com.nextshop.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.coroutines.Dispatchers
 
 
 class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
 
+    private val viewModelFactory: BaseViewModelFactory =
+        BaseViewModelFactory(
+            Dispatchers.Main,
+            Dispatchers.IO
+        )
+
     private val viewModel: ProductsViewModel by lazy {
-        ViewModelProviders.of(this).get(ProductsViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(ProductsViewModel::class.java)
     }
 
     private lateinit var adapter: GalleryAdapter
@@ -80,15 +87,10 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         gallery_rv.layoutManager = GridLayoutManager(context, 2)
         gallery_rv.itemAnimator = DefaultItemAnimator()
         gallery_rv.adapter = adapter
-
-       context?.let {
-           val itemDecoration = ItemOffsetDecoration(it, R.dimen.item_offset)
-            gallery_rv.addItemDecoration(itemDecoration)
-        }
     }
 
     private fun fetchProducts() {
-        viewModel.fetchProducts(currentQuery).observe(this, Observer<List<ProductItemResponse>> { it ->
+        viewModel.fetchProducts(currentQuery).observe(this, Observer<List<ProductsItemResponse>> { it ->
             if (!it.isNullOrEmpty()) {
                 adapter.setData(it)
                 hideStateProgress()
@@ -117,7 +119,7 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         state_without_conn_gallery.visibility = View.GONE
     }
 
-    private fun onClickItem(data: ProductItemResponse) {
+    private fun onClickItem(data: ProductsItemResponse) {
         val bundle = Bundle()
         bundle.putString(DetailFragment.KEY_PRODUCT_ID, data.productId)
         findNavController().navigate(R.id.action_gallery_to_detail, bundle, null, null)

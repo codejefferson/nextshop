@@ -1,7 +1,6 @@
 package com.nextshop.ui.detail
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,15 +16,18 @@ import androidx.viewpager.widget.ViewPager
 import com.nextshop.R
 import com.nextshop.mechanism.VerifyNetworkInfo
 import com.nextshop.service.model.ProductDetailResponse
-import com.nextshop.service.model.ProductResponse
+import com.nextshop.viewmodel.BaseViewModelFactory
 import com.nextshop.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.coroutines.Dispatchers
 import me.relex.circleindicator.CircleIndicator
 
 class DetailFragment : Fragment() {
 
+    private val viewModelFactory: BaseViewModelFactory = BaseViewModelFactory(Dispatchers.Main, Dispatchers.IO)
+
     private val viewModel: ProductViewModel by lazy {
-        ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(ProductViewModel(Dispatchers.Main, Dispatchers.IO)::class.java)
     }
 
     companion object {
@@ -96,6 +98,7 @@ class DetailFragment : Fragment() {
         viewModel.fetchProduct(productId).observe(this, Observer<ProductDetailResponse> {
             hideStateProgress()
             showProduct(it)
+            product_container_content.visibility = View.VISIBLE
         })
     }
 

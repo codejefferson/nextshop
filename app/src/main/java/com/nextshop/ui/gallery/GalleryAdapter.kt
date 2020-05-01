@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nextshop.R
-import com.nextshop.service.model.ProductItemResponse
+import com.nextshop.service.model.ProductsItemResponse
 import java.util.*
 
 
-class GalleryAdapter(val onClickItem: (ProductItemResponse) -> Unit) : RecyclerView.Adapter<GalleryItemViewHolder>() {
+class GalleryAdapter(val onClickItem: (ProductsItemResponse) -> Unit) : RecyclerView.Adapter<GalleryItemViewHolder>() {
 
-    private var items = mutableListOf<ProductItemResponse>()
-    private var visibleItems = mutableListOf<ProductItemResponse>()
+    private var items = mutableListOf<ProductsItemResponse>()
+    private var visibleItems = mutableListOf<ProductsItemResponse>()
 
-    fun setData(items: List<ProductItemResponse>) {
+    fun setData(items: List<ProductsItemResponse>) {
         this.items.clear()
         this.items.addAll(items)
 

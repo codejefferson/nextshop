@@ -1,11 +1,11 @@
 package com.nextshop.repository
 
 import com.nextshop.service.api.BaseAPI
-import com.nextshop.service.model.ProductItemResponse
+import com.nextshop.service.model.ProductsItemResponse
 
 object ProductsRepository : BaseRepository() {
 
-    suspend fun getProducts(tag: String): List<ProductItemResponse> {
+    suspend fun getProducts(tag: String): List<ProductsItemResponse> {
         val response = safeApiCall(
             call = {
                 BaseAPI.baseService.getProductsAsync(
@@ -15,8 +15,8 @@ object ProductsRepository : BaseRepository() {
             errorMessage = "Error to fetching images"
         )
 
-        val result: MutableList<ProductItemResponse> = mutableListOf()
-        response?.products?.map { it: ProductItemResponse -> result.add(it) }
+        val result: MutableList<ProductsItemResponse> = mutableListOf()
+        response?.products?.map { it: ProductsItemResponse -> result.add(it) }
 
         return result
     }

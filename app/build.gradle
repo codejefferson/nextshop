@@ -109,12 +109,14 @@ dependencies {
 
     // Test
     testImplementation 'junit:junit:4.12'
+    testImplementation "android.arch.core:core-testing:1.0.0"
     androidTestImplementation "androidx.test:core:$rootProject.testVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.testVersion"
     androidTestImplementation "androidx.test:rules:$rootProject.testVersion"
 
     // Mockito framework
     testImplementation 'org.mockito:mockito-core:2.22.0'
+    testImplementation "io.mockk:mockk:1.10.0"
 
     // Hamcrest library
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'

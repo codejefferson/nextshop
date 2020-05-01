@@ -14,28 +14,27 @@
         android:id="@+id/gallery_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="false"
         android:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <requestFocus />
-    </SearchView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gallery_rv"
-        android:layout_width="378dp"
-        android:layout_height="634dp"
+        android:layout_width="match_parent"
+        android:layout_height="706dp"
         android:layout_gravity="center"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:cacheColorHint="@android:color/transparent"
         android:clipToPadding="false"
         android:divider="@color/transparent"
         android:gravity="center"
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:padding="@dimen/item_offset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.914"
         app:layout_constraintStart_toStartOf="parent"

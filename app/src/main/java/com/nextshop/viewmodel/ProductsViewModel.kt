@@ -1,36 +1,44 @@
 package com.nextshop.viewmodel
 
-import android.app.Application
 import androidx.annotation.UiThread
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.nextshop.mechanism.SimpleCoroutines
 import com.nextshop.repository.ProductsRepository
-import com.nextshop.service.model.ProductItemResponse
+import com.nextshop.service.model.ProductsItemResponse
+import kotlinx.coroutines.*
 
-class ProductsViewModel(application: Application) : AndroidViewModel(application) {
+class ProductsViewModel(
+    mainDispatcher: CoroutineDispatcher,
+    ioDispatcher: CoroutineDispatcher
+) : ViewModel() {
 
-    private lateinit var products: MutableLiveData<List<ProductItemResponse>>
+    val products = MutableLiveData<List<ProductsItemResponse>>()
+
+    private val job = SupervisorJob()
+    private val uiScope = CoroutineScope(mainDispatcher + job)
+    private val ioScope = CoroutineScope(ioDispatcher + job)
 
     @UiThread
-    fun fetchProducts(tag: String): LiveData<List<ProductItemResponse>> {
-        if (!::products.isInitialized) {
-            this.products = MutableLiveData()
+    fun fetchProducts(tag: String): LiveData<List<ProductsItemResponse>> {
+        uiScope.launch {
+            try {
+                val data = ioScope.async {
+                    return@async ProductsRepository.getProducts(tag)
+                }.await()
 
-            // Request data
-            SimpleCoroutines.ioThenMain({
-                ProductsRepository.getProducts(tag)
-            }) {
-                it?.let { data ->
-                    if (data.isNotEmpty()) {
-                        products.value = data.toMutableList()
-                    }
-                }
+                products.value = data.toMutableList()
+            } catch (e: Exception) {
+                products.value = mutableListOf()
             }
-
         }
+
         return products
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        this.job.cancel()
+    }
 }

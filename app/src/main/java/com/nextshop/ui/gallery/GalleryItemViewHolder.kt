@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.nextshop.R
-import com.nextshop.service.model.ProductItemResponse
+import com.nextshop.service.model.ProductsItemResponse
 import kotlinx.android.synthetic.main.item_gallery.view.*
 
 class GalleryItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-    var data: ProductItemResponse? = null
+    var data: ProductsItemResponse? = null
         set(value) {
             field = value
             value?.let {
@@ -20,15 +20,15 @@ class GalleryItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-    private fun populateProductPrice(value: ProductItemResponse) {
+    private fun populateProductPrice(value: ProductsItemResponse) {
         view.item_gallery_product_price.text = "€${value.salesPriceIncVat}"
     }
 
-    private fun populateProductName(value: ProductItemResponse) {
+    private fun populateProductName(value: ProductsItemResponse) {
         view.item_gallery_product_name.text = value.productName
     }
 
-    private fun populateThumbnail(data: ProductItemResponse) {
+    private fun populateThumbnail(data: ProductsItemResponse) {
         data.let {
             it.productImage.let {imageUrl ->
                 Glide.with(view.context)

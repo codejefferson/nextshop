@@ -43,7 +43,22 @@ class DetailFragmentTest {
             .perform(click())
 
         waitSleep(3000)
-        onView(withId(R.id.item_detail_photo_thumbnail)).check(matches(isDisplayed()))
+        onView(withId(R.id.product_viewpager)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun detailScreen_showContentInDetailTest() {
+        waitSleep(5000)
+        onView(withId(R.id.gallery_rv))
+            .perform(RecyclerViewActions.scrollToPosition<GalleryItemViewHolder>(0))
+            .perform(click())
+
+        waitSleep(3000)
+        onView(withId(R.id.product_container_content)).check(matches(isDisplayed()))
+        onView(withId(R.id.product_description)).check(matches(isDisplayed()))
+        onView(withId(R.id.product_name)).check(matches(isDisplayed()))
+        onView(withId(R.id.product_price)).check(matches(isDisplayed()))
+        onView(withId(R.id.product_rating)).check(matches(isDisplayed()))
     }
 
     private fun waitSleep(time: Long) {

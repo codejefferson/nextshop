@@ -1,32 +1,36 @@
 package com.nextshop.viewmodel
 
-import android.app.Application
 import androidx.annotation.UiThread
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nextshop.mechanism.SimpleCoroutines
+import androidx.lifecycle.ViewModel
 import com.nextshop.repository.ProductRepository
 import com.nextshop.service.model.ProductDetailResponse
+import kotlinx.coroutines.*
 
-class ProductViewModel(application: Application) : AndroidViewModel(application) {
+class ProductViewModel(
+    mainDispatcher: CoroutineDispatcher,
+    ioDispatcher: CoroutineDispatcher
+) : ViewModel() {
 
-    private lateinit var product: MutableLiveData<ProductDetailResponse>
+    val product = MutableLiveData<ProductDetailResponse>()
+
+    private val job = SupervisorJob()
+    private val uiScope = CoroutineScope(mainDispatcher + job)
+    private val ioScope = CoroutineScope(ioDispatcher + job)
 
     @UiThread
     fun fetchProduct(productId: String): LiveData<ProductDetailResponse> {
-        if (!::product.isInitialized) {
-            this.product = MutableLiveData()
+        uiScope.launch {
+            try {
+                val data = ioScope.async {
+                    return@async ProductRepository.getProduct(productId)
+                }.await()
 
-            // Request data
-            SimpleCoroutines.ioThenMain({
-                ProductRepository.getProduct(productId)
-            }) {
-                it?.let { data ->
-                    product.value = data.product
-                }
+                product.value = data?.product
+            } catch (e: Exception) {
+                product.value = null
             }
-
         }
         return product
     }

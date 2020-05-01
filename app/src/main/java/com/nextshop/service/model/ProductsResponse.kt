@@ -1,8 +1,8 @@
 package com.nextshop.service.model
 
-data class ProductsResponse(val products: List<ProductItemResponse>)
+data class ProductsResponse(val products: List<ProductsItemResponse>)
 
-data class ProductItemResponse(val productId: String,
-                               val productName: String,
-                               val salesPriceIncVat: String,
-                               val productImage: String)
+data class ProductsItemResponse(val productId: String,
+                                val productName: String,
+                                val salesPriceIncVat: String,
+                                val productImage: String)
