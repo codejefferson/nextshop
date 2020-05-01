@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gallery_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#2CBFDADF"
+    android:padding="16dp"
+    tools:context=".ui.gallery.GalleryFragment">
+
+    <SearchView
+        android:id="@+id/gallery_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <requestFocus />
+    </SearchView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gallery_rv"
+        android:layout_width="378dp"
+        android:layout_height="634dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:clipToPadding="false"
+        android:divider="@color/transparent"
+        android:gravity="center"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:padding="@dimen/item_offset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_search"
+        tools:listitem="@layout/item_gallery" />
+
+    <include
+        android:id="@+id/state_progress_gallery"
+        layout="@layout/include_state_progress_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_search"
+        app:layout_constraintVertical_bias="0.405"
+        tools:visibility="gone" />
+
+    <include
+        android:id="@+id/state_without_conn_gallery"
+        layout="@layout/include_state_without_conn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

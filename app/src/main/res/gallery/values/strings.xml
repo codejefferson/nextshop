@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="txt_progress_gallery">Searching products…</string>
+    <string name="txt_without_conn_gallery">Please, check your connection and touch here!</string>
+
+    <string name="txt_search_hint">Can I help you?</string>
+</resources>

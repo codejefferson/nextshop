@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/app_navigation"
+            app:startDestination="@id/gallery_fragment">
+
+    <fragment
+            android:id="@+id/gallery_fragment"
+            android:name="com.nextshop.ui.gallery.GalleryFragment"
+            android:label="gallery_fragment"
+            tools:layout="@layout/fragment_gallery">
+        <action
+                android:id="@+id/action_gallery_to_detail"
+                app:destination="@id/detail_fragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/detail_fragment"
+            android:name="com.nextshop.ui.detail.DetailFragment"
+            android:label="fragment_detail"
+            tools:layout="@layout/fragment_detail"/>
+
+</navigation>

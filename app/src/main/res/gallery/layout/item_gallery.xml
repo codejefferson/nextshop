@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="190dp"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:elevation="11dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_gallery_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_placeholder"
+            android:visibility="gone"
+            tools:showIn="@layout/item_gallery"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/item_gallery_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Iphone MX 10" />
+
+        <TextView
+            android:id="@+id/item_gallery_product_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="$290,00" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
