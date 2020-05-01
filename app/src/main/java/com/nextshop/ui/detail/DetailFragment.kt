@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
@@ -16,7 +17,11 @@ import androidx.viewpager.widget.ViewPager
 import com.nextshop.R
 import com.nextshop.mechanism.VerifyNetworkInfo
 import com.nextshop.service.model.ProductDetailResponse
+import com.nextshop.service.model.ProductsItemResponse
 import com.nextshop.viewmodel.BaseViewModelFactory
+import com.nextshop.viewmodel.LiveDataResult
+import com.nextshop.viewmodel.LiveDataResult.*
+import com.nextshop.viewmodel.LiveDataResult.STATUS.*
 import com.nextshop.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.Dispatchers
@@ -95,10 +100,20 @@ class DetailFragment : Fragment() {
     }
 
     private fun fetchProduct() {
-        viewModel.fetchProduct(productId).observe(this, Observer<ProductDetailResponse> {
-            hideStateProgress()
-            showProduct(it)
-            product_container_content.visibility = View.VISIBLE
+        viewModel.fetchProduct(productId).observe(this, Observer<LiveDataResult<ProductDetailResponse>> { liveDataResult ->
+            when(liveDataResult.status) {
+                SUCCESS -> {
+                    liveDataResult.data?.let {
+                        hideStateProgress()
+                        showProduct(liveDataResult.data)
+                        container_viewpager.visibility = View.VISIBLE
+                        product_container_content.visibility = View.VISIBLE
+                    }
+                }
+                ERROR -> {
+                    Toast.makeText(context,"I'm sorry, I'm afraid I can't do that...", Toast.LENGTH_SHORT).show();
+                }
+            }
         })
     }
 

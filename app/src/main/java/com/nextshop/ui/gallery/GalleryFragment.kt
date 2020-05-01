@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,6 +18,9 @@ import com.nextshop.mechanism.VerifyNetworkInfo
 import com.nextshop.service.model.ProductsItemResponse
 import com.nextshop.viewmodel.BaseViewModelFactory
 import com.nextshop.ui.detail.DetailFragment
+import com.nextshop.viewmodel.LiveDataResult
+import com.nextshop.viewmodel.LiveDataResult.STATUS
+import com.nextshop.viewmodel.LiveDataResult.STATUS.*
 import com.nextshop.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +41,11 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var adapter: GalleryAdapter
     private var currentQuery: String = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_gallery, container, false)
     }
@@ -78,7 +86,8 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(false) // disable the button
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false) // remove the left caret
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
-        (activity as AppCompatActivity).supportActionBar?.title = resources.getString(R.string.app_name)
+        (activity as AppCompatActivity).supportActionBar?.title =
+            resources.getString(R.string.app_name)
     }
 
     private fun buildGallery() {
@@ -90,13 +99,27 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun fetchProducts() {
-        viewModel.fetchProducts(currentQuery).observe(this, Observer<List<ProductsItemResponse>> { it ->
-            if (!it.isNullOrEmpty()) {
-                adapter.setData(it)
-                hideStateProgress()
-                showList()
-            }
-        })
+        viewModel.fetchProducts(currentQuery)
+        viewModel.products.observe(
+            this,
+            Observer<LiveDataResult<List<ProductsItemResponse>>> { liveDataResult ->
+                when (liveDataResult.status) {
+                    SUCCESS -> {
+                        liveDataResult.data?.let {
+                            adapter.setData(it)
+                            hideStateProgress()
+                            showList()
+                        }
+                    }
+                    ERROR -> {
+                        Toast.makeText(
+                            context,
+                            "I'm sorry, I'm afraid I can't do that...",
+                            Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                }
+            })
     }
 
     private fun showList() {
